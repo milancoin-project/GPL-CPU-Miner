@@ -108,7 +108,7 @@ m4trace:/usr/share/aclocal/libcurl.m4:38: -1- AC_DEFUN([LIBCURL_CHECK_CONFIG], [
            _libcurl_save_libs=$LIBS
            LIBS="$LIBCURL $LIBS"
 
-           AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <curl/curl.h>]],[[
+           AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <curl/curl.h>],[
 /* Try and use a few common options to force a failure if we are
    missing symbols or can't link. */
 int x;
@@ -119,8 +119,7 @@ x=CURLOPT_FILE;
 x=CURLOPT_ERRORBUFFER;
 x=CURLOPT_STDERR;
 x=CURLOPT_VERBOSE;
-if (x) ;
-]])],libcurl_cv_lib_curl_usable=yes,libcurl_cv_lib_curl_usable=no)
+])],libcurl_cv_lib_curl_usable=yes,libcurl_cv_lib_curl_usable=no)
 
            CPPFLAGS=$_libcurl_save_cppflags
            LIBS=$_libcurl_save_libs
@@ -214,10 +213,10 @@ if (x) ;
 m4trace:/usr/share/aclocal-1.11/amversion.m4:17: -1- AC_DEFUN([AM_AUTOMAKE_VERSION], [am__api_version='1.11'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.11.6], [],
+m4_if([$1], [1.11.3], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
-m4trace:/usr/share/aclocal-1.11/amversion.m4:36: -1- AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION], [AM_AUTOMAKE_VERSION([1.11.6])dnl
+m4trace:/usr/share/aclocal-1.11/amversion.m4:36: -1- AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION], [AM_AUTOMAKE_VERSION([1.11.3])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
 _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
@@ -925,7 +924,7 @@ m4trace:configure.ac:1: -1- m4_pattern_allow([^build_alias$])
 m4trace:configure.ac:1: -1- m4_pattern_allow([^host_alias$])
 m4trace:configure.ac:1: -1- m4_pattern_allow([^target_alias$])
 m4trace:configure.ac:4: -1- _m4_warn([obsolete], [The macro `AC_CANONICAL_SYSTEM' is obsolete.
-You should run autoupdate.], [../../lib/autoconf/general.m4:1857: AC_CANONICAL_SYSTEM is expanded from...
+You should run autoupdate.], [../../lib/autoconf/general.m4:1858: AC_CANONICAL_SYSTEM is expanded from...
 configure.ac:4: the top level])
 m4trace:configure.ac:4: -1- m4_pattern_allow([^build$])
 m4trace:configure.ac:4: -1- m4_pattern_allow([^build_cpu$])
@@ -942,8 +941,8 @@ m4trace:configure.ac:4: -1- m4_pattern_allow([^target_os$])
 m4trace:configure.ac:6: -1- AM_INIT_AUTOMAKE([gnu])
 m4trace:configure.ac:6: -1- m4_pattern_allow([^AM_[A-Z]+FLAGS$])
 m4trace:configure.ac:6: -1- AM_SET_CURRENT_AUTOMAKE_VERSION
-m4trace:configure.ac:6: -1- AM_AUTOMAKE_VERSION([1.11.6])
-m4trace:configure.ac:6: -1- _AM_AUTOCONF_VERSION([2.69])
+m4trace:configure.ac:6: -1- AM_AUTOMAKE_VERSION([1.11.3])
+m4trace:configure.ac:6: -1- _AM_AUTOCONF_VERSION([2.68])
 m4trace:configure.ac:6: -1- m4_pattern_allow([^INSTALL_PROGRAM$])
 m4trace:configure.ac:6: -1- m4_pattern_allow([^INSTALL_SCRIPT$])
 m4trace:configure.ac:6: -1- m4_pattern_allow([^INSTALL_DATA$])
@@ -1115,7 +1114,7 @@ m4trace:configure.ac:104: -1- _AM_SUBST_NOTMAKE([ARCH_x86_64_TRUE])
 m4trace:configure.ac:104: -1- _AM_SUBST_NOTMAKE([ARCH_x86_64_FALSE])
 m4trace:configure.ac:113: -1- LIBCURL_CHECK_CONFIG([], [7.15.2], [], [AC_MSG_ERROR([Missing required libcurl >= 7.15.2])])
 m4trace:configure.ac:113: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
-You should run autoupdate.], [../../lib/autoconf/general.m4:207: AC_HELP_STRING is expanded from...
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
 /usr/share/aclocal/libcurl.m4:38: LIBCURL_CHECK_CONFIG is expanded from...
 configure.ac:113: the top level])
 m4trace:configure.ac:113: -1- m4_pattern_allow([^AWK$])

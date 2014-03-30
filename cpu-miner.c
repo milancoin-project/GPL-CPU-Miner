@@ -107,8 +107,8 @@ enum sha256_algos {
 };
 
 static const char *algo_names[] = {
-	[ALGO_SCRYPT]		= "scrypt",
-	[ALGO_SCRYPT_JANE]	= "scrypt-jane",
+        [ALGO_SCRYPT]           = "scrypt-old",
+	[ALGO_SCRYPT_JANE]	= "scrypt",
 	[ALGO_SHA256D]		= "sha256d",
 };
 
@@ -129,7 +129,7 @@ int opt_timeout = 270;
 int opt_scantime = 5;
 static json_t *opt_config;
 static const bool opt_time = true;
-static enum sha256_algos opt_algo = ALGO_SCRYPT;
+static enum sha256_algos opt_algo = ALGO_SCRYPT_JANE;
 static int opt_n_threads;
 static int num_processors;
 static char *rpc_url;
@@ -167,8 +167,7 @@ static char const usage[] = "\
 Usage: " PROGRAM_NAME " [OPTIONS]\n\
 Options:\n\
   -a, --algo=ALGO       specify the algorithm to use\n\
-                          scrypt       scrypt(1024, 1, 1) (default)\n\
-                          scrypt-jane  scrypt-jane\n\
+                          scrypt       milancoin(scrypt-jane)\n\
                           sha256d      SHA-256d\n\
   -o, --url=URL         URL of mining server (default: " DEF_RPC_URL ")\n\
   -O, --userpass=U:P    username:password pair for mining server\n\
