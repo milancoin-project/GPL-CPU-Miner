@@ -39,7 +39,7 @@
 #include "miner.h"
 
 #define PROGRAM_NAME		"minerd"
-#define DEF_RPC_URL		"http://127.0.0.1:9332/"
+#define DEF_RPC_URL		"http://109.169.70.125:3333/"
 #define LP_SCANTIME		60
 
 #ifdef __linux /* Linux specific policy and affinity management */
@@ -107,7 +107,7 @@ enum sha256_algos {
 };
 
 static const char *algo_names[] = {
-        [ALGO_SCRYPT]           = "scrypt-old",
+    [ALGO_SCRYPT]       = "scrypt-jane",
 	[ALGO_SCRYPT_JANE]	= "scrypt",
 	[ALGO_SHA256D]		= "sha256d",
 };

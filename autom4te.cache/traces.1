@@ -148,7 +148,7 @@ m4trace:configure.ac:1: -1- AC_SUBST_TRACE([target_alias])
 m4trace:configure.ac:1: -1- m4_pattern_allow([^target_alias$])
 m4trace:configure.ac:4: -1- AC_CANONICAL_SYSTEM
 m4trace:configure.ac:4: -1- _m4_warn([obsolete], [The macro `AC_CANONICAL_SYSTEM' is obsolete.
-You should run autoupdate.], [../../lib/autoconf/general.m4:1858: AC_CANONICAL_SYSTEM is expanded from...
+You should run autoupdate.], [/usr/src/autoconf/autoconf-2.68-1/src/autoconf-2.68/lib/autoconf/general.m4:1858: AC_CANONICAL_SYSTEM is expanded from...
 configure.ac:4: the top level])
 m4trace:configure.ac:4: -1- AC_CANONICAL_TARGET
 m4trace:configure.ac:4: -1- AC_CANONICAL_HOST
@@ -193,7 +193,7 @@ m4trace:configure.ac:4: -1- AC_SUBST_TRACE([target_os])
 m4trace:configure.ac:4: -1- m4_pattern_allow([^target_os$])
 m4trace:configure.ac:6: -1- AM_INIT_AUTOMAKE([gnu])
 m4trace:configure.ac:6: -1- m4_pattern_allow([^AM_[A-Z]+FLAGS$])
-m4trace:configure.ac:6: -1- AM_AUTOMAKE_VERSION([1.11.3])
+m4trace:configure.ac:6: -1- AM_AUTOMAKE_VERSION([1.11.1])
 m4trace:configure.ac:6: -1- AC_REQUIRE_AUX_FILE([install-sh])
 m4trace:configure.ac:6: -1- AC_SUBST([INSTALL_PROGRAM])
 m4trace:configure.ac:6: -1- AC_SUBST_TRACE([INSTALL_PROGRAM])
@@ -266,7 +266,7 @@ m4trace:configure.ac:6: -1- m4_pattern_allow([^SET_MAKE$])
 m4trace:configure.ac:6: -1- AC_SUBST([am__leading_dot])
 m4trace:configure.ac:6: -1- AC_SUBST_TRACE([am__leading_dot])
 m4trace:configure.ac:6: -1- m4_pattern_allow([^am__leading_dot$])
-m4trace:configure.ac:6: -1- AC_SUBST([AMTAR], ['$${TAR-tar}'])
+m4trace:configure.ac:6: -1- AC_SUBST([AMTAR])
 m4trace:configure.ac:6: -1- AC_SUBST_TRACE([AMTAR])
 m4trace:configure.ac:6: -1- m4_pattern_allow([^AMTAR$])
 m4trace:configure.ac:6: -1- AC_SUBST([am__tar])
@@ -347,10 +347,6 @@ m4trace:configure.ac:13: -1- AC_SUBST([AMDEPBACKSLASH])
 m4trace:configure.ac:13: -1- AC_SUBST_TRACE([AMDEPBACKSLASH])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^AMDEPBACKSLASH$])
 m4trace:configure.ac:13: -1- _AM_SUBST_NOTMAKE([AMDEPBACKSLASH])
-m4trace:configure.ac:13: -1- AC_SUBST([am__nodep])
-m4trace:configure.ac:13: -1- AC_SUBST_TRACE([am__nodep])
-m4trace:configure.ac:13: -1- m4_pattern_allow([^am__nodep$])
-m4trace:configure.ac:13: -1- _AM_SUBST_NOTMAKE([am__nodep])
 m4trace:configure.ac:13: -1- AC_SUBST([CCDEPMODE], [depmode=$am_cv_CC_dependencies_compiler_type])
 m4trace:configure.ac:13: -1- AC_SUBST_TRACE([CCDEPMODE])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^CCDEPMODE$])
@@ -549,75 +545,9 @@ m4trace:configure.ac:104: -1- AC_SUBST_TRACE([ARCH_x86_64_FALSE])
 m4trace:configure.ac:104: -1- m4_pattern_allow([^ARCH_x86_64_FALSE$])
 m4trace:configure.ac:104: -1- _AM_SUBST_NOTMAKE([ARCH_x86_64_TRUE])
 m4trace:configure.ac:104: -1- _AM_SUBST_NOTMAKE([ARCH_x86_64_FALSE])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_SSL], [/* Defined if libcurl supports SSL */
-@%:@undef LIBCURL_FEATURE_SSL])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_KRB4], [/* Defined if libcurl supports KRB4 */
-@%:@undef LIBCURL_FEATURE_KRB4])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_IPV6], [/* Defined if libcurl supports IPv6 */
-@%:@undef LIBCURL_FEATURE_IPV6])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_LIBZ], [/* Defined if libcurl supports libz */
-@%:@undef LIBCURL_FEATURE_LIBZ])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_ASYNCHDNS], [/* Defined if libcurl supports AsynchDNS */
-@%:@undef LIBCURL_FEATURE_ASYNCHDNS])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_IDN], [/* Defined if libcurl supports IDN */
-@%:@undef LIBCURL_FEATURE_IDN])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_SSPI], [/* Defined if libcurl supports SSPI */
-@%:@undef LIBCURL_FEATURE_SSPI])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_FEATURE_NTLM], [/* Defined if libcurl supports NTLM */
-@%:@undef LIBCURL_FEATURE_NTLM])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_HTTP], [/* Defined if libcurl supports HTTP */
-@%:@undef LIBCURL_PROTOCOL_HTTP])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_HTTPS], [/* Defined if libcurl supports HTTPS */
-@%:@undef LIBCURL_PROTOCOL_HTTPS])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_FTP], [/* Defined if libcurl supports FTP */
-@%:@undef LIBCURL_PROTOCOL_FTP])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_FTPS], [/* Defined if libcurl supports FTPS */
-@%:@undef LIBCURL_PROTOCOL_FTPS])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_FILE], [/* Defined if libcurl supports FILE */
-@%:@undef LIBCURL_PROTOCOL_FILE])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_TELNET], [/* Defined if libcurl supports TELNET */
-@%:@undef LIBCURL_PROTOCOL_TELNET])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_LDAP], [/* Defined if libcurl supports LDAP */
-@%:@undef LIBCURL_PROTOCOL_LDAP])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_DICT], [/* Defined if libcurl supports DICT */
-@%:@undef LIBCURL_PROTOCOL_DICT])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_TFTP], [/* Defined if libcurl supports TFTP */
-@%:@undef LIBCURL_PROTOCOL_TFTP])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_RTSP], [/* Defined if libcurl supports RTSP */
-@%:@undef LIBCURL_PROTOCOL_RTSP])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_POP3], [/* Defined if libcurl supports POP3 */
-@%:@undef LIBCURL_PROTOCOL_POP3])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_IMAP], [/* Defined if libcurl supports IMAP */
-@%:@undef LIBCURL_PROTOCOL_IMAP])
-m4trace:configure.ac:113: -1- AH_OUTPUT([LIBCURL_PROTOCOL_SMTP], [/* Defined if libcurl supports SMTP */
-@%:@undef LIBCURL_PROTOCOL_SMTP])
-m4trace:configure.ac:113: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
-You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
-aclocal.m4:60: LIBCURL_CHECK_CONFIG is expanded from...
-configure.ac:113: the top level])
-m4trace:configure.ac:113: -1- AC_SUBST([AWK])
-m4trace:configure.ac:113: -1- AC_SUBST_TRACE([AWK])
-m4trace:configure.ac:113: -1- m4_pattern_allow([^AWK$])
-m4trace:configure.ac:113: -1- AC_SUBST([_libcurl_config])
-m4trace:configure.ac:113: -1- AC_SUBST_TRACE([_libcurl_config])
-m4trace:configure.ac:113: -1- m4_pattern_allow([^_libcurl_config$])
-m4trace:configure.ac:113: -1- AC_SUBST([_libcurl_config])
-m4trace:configure.ac:113: -1- AC_SUBST_TRACE([_libcurl_config])
-m4trace:configure.ac:113: -1- m4_pattern_allow([^_libcurl_config$])
-m4trace:configure.ac:113: -2- AC_DEFINE_TRACE_LITERAL([curl_free])
-m4trace:configure.ac:113: -2- m4_pattern_allow([^curl_free$])
-m4trace:configure.ac:113: -2- AH_OUTPUT([curl_free], [/* Define curl_free() as free() if our version of curl lacks curl_free. */
-@%:@undef curl_free])
-m4trace:configure.ac:113: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBCURL])
-m4trace:configure.ac:113: -1- m4_pattern_allow([^HAVE_LIBCURL$])
-m4trace:configure.ac:113: -1- AH_OUTPUT([HAVE_LIBCURL], [/* Define to 1 if you have a functional curl library. */
-@%:@undef HAVE_LIBCURL])
-m4trace:configure.ac:113: -1- AC_SUBST([LIBCURL_CPPFLAGS])
-m4trace:configure.ac:113: -1- AC_SUBST_TRACE([LIBCURL_CPPFLAGS])
-m4trace:configure.ac:113: -1- m4_pattern_allow([^LIBCURL_CPPFLAGS$])
-m4trace:configure.ac:113: -1- AC_SUBST([LIBCURL])
-m4trace:configure.ac:113: -1- AC_SUBST_TRACE([LIBCURL])
-m4trace:configure.ac:113: -1- m4_pattern_allow([^LIBCURL$])
+m4trace:configure.ac:115: -1- AC_SUBST([LIBCURL_LIBS])
+m4trace:configure.ac:115: -1- AC_SUBST_TRACE([LIBCURL_LIBS])
+m4trace:configure.ac:115: -1- m4_pattern_allow([^LIBCURL_LIBS$])
 m4trace:configure.ac:116: -1- AC_SUBST([JANSSON_LIBS])
 m4trace:configure.ac:116: -1- AC_SUBST_TRACE([JANSSON_LIBS])
 m4trace:configure.ac:116: -1- m4_pattern_allow([^JANSSON_LIBS$])

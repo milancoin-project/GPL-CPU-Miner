@@ -33,6 +33,10 @@ Basic Windows build instructions, using MinGW:
 		./autogen.sh	# only needed if building from git repo
 		LIBCURL="-lcurldll" ./configure CFLAGS="-O3"
 		make
+	In the MINGW32 shell, run:
+		./autogen.sh	# only needed if building from git repo
+		./configure CFLAGS="-O3" -build=MINGW32
+		mingw32-make
 
 Architecture-specific notes:
 	ARM:	No runtime CPU detection. The miner can take advantage

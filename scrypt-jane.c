@@ -211,7 +211,7 @@ unsigned char GetNfactor(unsigned int nTimestamp) {
         printf("GetNfactor(%d) - something wrong(n == %d)\n", nTimestamp, n);
 
     unsigned char N = (unsigned char)n;
-    //printf("GetNfactor: %d -> %d %d : %d / %d\n", nTimestamp - nChainStartTime, l, s, n, min(max(N, minNfactor), maxNfactor));
+    //printf("GetNfactor: %d -> %d %d : %d / %d\n", nTimestamp -1387756800, l, s, n, min(max(N, minNfactor), maxNfactor));
 
 //    return min(max(N, minNfactor), maxNfactor);
 
