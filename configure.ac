@@ -1,4 +1,4 @@
-AC_INIT([cpuminer], [2.3.2])
+AC_INIT([cpuminer], [2.4.0])
 
 AC_PREREQ([2.59c])
 AC_CANONICAL_SYSTEM
@@ -110,9 +110,7 @@ else
 	JANSSON_LIBS=-ljansson
 fi
 
-#LIBCURL_CHECK_CONFIG(, 7.15.2, , [AC_MSG_ERROR([Missing required libcurl >= 7.15.2])])
 
-AC_SUBST(LIBCURL_LIBS)
 AC_SUBST(JANSSON_LIBS)
 AC_SUBST(PTHREAD_FLAGS)
 AC_SUBST(PTHREAD_LIBS)

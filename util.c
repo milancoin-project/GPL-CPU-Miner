@@ -377,7 +377,8 @@ json_t *json_rpc_call(CURL *curl, const char *url,
 
 	/* If X-Stratum was found, activate Stratum */
 	if (want_stratum && hi.stratum_url &&
-	    !strncasecmp(hi.stratum_url, "stratum+tcp://", 14)) {
+	!strncasecmp(hi.stratum_url, "stratum+tcp://", 14) &&
+	!(opt_proxy && opt_proxy_type == CURLPROXY_HTTP)) {
 		have_stratum = true;
 		tq_push(thr_info[stratum_thr_id].q, hi.stratum_url);
 		hi.stratum_url = NULL;
@@ -530,7 +531,7 @@ bool fulltest(const uint32_t *hash, const uint32_t *target)
 	}
 
 	if (opt_debug) {
-		uint32_t hash_be[32], target_be[32];
+		uint32_t hash_be[8], target_be[8];
 		char *hash_str, *target_str;
 		
 		for (i = 0; i < 8; i++) {
@@ -1168,6 +1169,9 @@ bool stratum_handle_method(struct stratum_ctx *sctx, const char *s)
 		goto out;
 	id = json_object_get(val, "id");
 	params = json_object_get(val, "params");
+
+//	if (opt_debug)
+//		applog(LOG_NOTICE,"stratum handle method: %s (%s)",method,s);
 
 	if (!strcasecmp(method, "mining.notify")) {
 		ret = stratum_notify(sctx, params);

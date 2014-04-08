@@ -122,6 +122,40 @@ static inline void le32enc(void *pp, uint32_t x)
 }
 #endif
 
+#if (!defined(WIN32) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))) \
+    || (defined(WIN32) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7)))
+#ifndef bswap_16
+ #define bswap_16 __builtin_bswap16
+ #define bswap_32 __builtin_bswap32
+ #define bswap_64 __builtin_bswap64
+#endif
+#else
+#if HAVE_BYTESWAP_H
+#include <byteswap.h>
+#elif defined(USE_SYS_ENDIAN_H)
+#include <sys/endian.h>
+#elif defined(__APPLE__)
+#include <libkern/OSByteOrder.h>
+#define bswap_16 OSSwapInt16
+#define bswap_32 OSSwapInt32
+#define bswap_64 OSSwapInt64
+#else
+#define	bswap_16(value)  \
+ 	((((value) & 0xff) << 8) | ((value) >> 8))
+
+#define	bswap_32(value)	\
+ 	(((uint32_t)bswap_16((uint16_t)((value) & 0xffff)) << 16) | \
+ 	(uint32_t)bswap_16((uint16_t)((value) >> 16)))
+
+#define	bswap_64(value)	\
+ 	(((uint64_t)bswap_32((uint32_t)((value) & 0xffffffff)) \
+ 	    << 32) | \
+ 	(uint64_t)bswap_32((uint32_t)((value) >> 32)))
+#endif
+#endif /* !defined(__GLXBYTEORDER_H__) */
+
+
+
 #if JANSSON_MAJOR_VERSION >= 2
 #define JSON_LOADS(str, err_ptr) json_loads((str), 0, (err_ptr))
 #else
@@ -159,7 +193,6 @@ extern int scanhash_scrypt(int thr_id, uint32_t *pdata,
 extern int scanhash_scrypt_jane(int thr_id, uint32_t *pdata,
 	const uint32_t *ptarget,
 	uint32_t max_nonce, unsigned long *hashes_done);
-
 struct thr_info {
 	int		id;
 	pthread_t	pth;
@@ -187,6 +220,9 @@ extern struct thr_info *thr_info;
 extern int longpoll_thr_id;
 extern int stratum_thr_id;
 extern struct work_restart *work_restart;
+extern unsigned int found_blocks;
+extern uint64_t best_diff;
+
 
 extern void applog(int prio, const char *fmt, ...);
 extern json_t *json_rpc_call(CURL *curl, const char *url, const char *userpass,
@@ -197,6 +233,7 @@ extern int timeval_subtract(struct timeval *result, struct timeval *x,
 	struct timeval *y);
 extern bool fulltest(const uint32_t *hash, const uint32_t *target);
 extern void diff_to_target(uint32_t *target, double diff);
+extern unsigned char GetNfactor(unsigned int nTimestamp, int minn, int maxn, long starttime);
 
 struct stratum_job {
 	char *job_id;
@@ -234,6 +271,22 @@ struct stratum_ctx {
 	pthread_mutex_t work_lock;
 };
 
+static inline void swab256(void *dest_p, const void *src_p)
+{
+	uint32_t *dest = dest_p;
+	const uint32_t *src = src_p;
+
+	dest[0] = swab32(src[7]);
+	dest[1] = swab32(src[6]);
+	dest[2] = swab32(src[5]);
+	dest[3] = swab32(src[4]);
+	dest[4] = swab32(src[3]);
+	dest[5] = swab32(src[2]);
+	dest[6] = swab32(src[1]);
+	dest[7] = swab32(src[0]);
+}
+
+
 bool stratum_socket_full(struct stratum_ctx *sctx, int timeout);
 bool stratum_send_line(struct stratum_ctx *sctx, char *s);
 char *stratum_recv_line(struct stratum_ctx *sctx);
@@ -251,5 +304,18 @@ extern bool tq_push(struct thread_q *tq, void *data);
 extern void *tq_pop(struct thread_q *tq, const struct timespec *abstime);
 extern void tq_freeze(struct thread_q *tq);
 extern void tq_thaw(struct thread_q *tq);
+
+extern int sc_minn;
+extern int sc_maxn;
+extern long sc_starttime;
+extern int sc_currentn;
+
+
+#define MIN_NFACTOR 4
+#define MIN_NFACTOR_STR "4"
+#define MAX_NFACTOR 40
+#define MAX_NFACTOR_STR "40"
+#define MAX_STARTTIME 2147483647
+#define MAX_STARTTIME_STR "2147483647"
 
 #endif /* __MINER_H__ */

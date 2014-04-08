@@ -59,6 +59,15 @@
 	#if defined(__AVX__)
 		#define X86_INTRINSIC_AVX
 	#endif
+
+	/* HACK - I want to use CPU_X86_FORCE_INTRINSICS with mingw64 so these need to be undefined - mikaelh */
+	#undef X86_64ASM_SSSE3
+	#undef X86_64ASM_AVX
+	#undef X86_64ASM_SSE2
+	#undef X86ASM_AVX
+	#undef X86ASM_SSSE3
+	#undef X86ASM_SSE2
+	#undef X86ASM_SSE
 #endif
 
 /* only use simd on windows (or SSE2 on gcc)! */
@@ -79,6 +88,10 @@
 	#if defined(X86_INTRINSIC_SSSE3)
 		#define X86_INTRINSIC_SSSE3
 		#include <tmmintrin.h>
+	#endif
+	#if defined (X86_INTRINSIC_AVX)
+		#define X86_INTRINSIC_AVX
+		#include <immintrin.h>
 	#endif
 #endif
 

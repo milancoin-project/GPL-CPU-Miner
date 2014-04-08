@@ -1,8 +1,8 @@
-Version 2.3.2 - Jul 10, 2013
+Version 2.4.0 - Mar 8, 2014
 
-- Add optimizations for AVX2-capable x86-64 processors
-- Ensure that the output stream is flushed after every log message
-- Fix an undefined-behavior bug in the Stratum code
+- Implementation of --nfmin, --nfmax, and --starttime to allow 
+ mining of coins other than YACoin
+- Clone some fixes implemented in pooler's main fork
 
 Version 2.3.1 - Jun 18, 2013
 

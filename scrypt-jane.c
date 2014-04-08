@@ -9,6 +9,13 @@
 
 #include <string.h>
 
+/* Hard-coded scrypt parameteres r and p - mikaelh */
+#define SCRYPT_R 1
+#define SCRYPT_P 1
+
+/* Only the instrinsics versions are optimized for hard-coded values - mikaelh */
+#define CPU_X86_FORCE_INTRINSICS
+
 #include "scrypt-jane.h"
 #include "code/scrypt-jane-portable.h"
 #include "code/scrypt-jane-hash.h"
@@ -43,43 +50,6 @@ static scrypt_fatal_errorfn scrypt_fatal_error = scrypt_fatal_error_default;
 void
 scrypt_set_fatal_error_default(scrypt_fatal_errorfn fn) {
 	scrypt_fatal_error = fn;
-}
-
-static int
-scrypt_power_on_self_test() {
-	const scrypt_test_setting *t;
-	uint8_t test_digest[64];
-	uint32_t i;
-	int res = 7, scrypt_valid;
-
-	if (!scrypt_test_mix()) {
-#if !defined(SCRYPT_TEST)
-		scrypt_fatal_error("scrypt: mix function power-on-self-test failed");
-#endif
-		res &= ~1;
-	}
-
-	if (!scrypt_test_hash()) {
-#if !defined(SCRYPT_TEST)
-		scrypt_fatal_error("scrypt: hash function power-on-self-test failed");
-#endif
-		res &= ~2;
-	}
-
-	for (i = 0, scrypt_valid = 1; post_settings[i].pw; i++) {
-		t = post_settings + i;
-		scrypt((uint8_t *)t->pw, strlen(t->pw), (uint8_t *)t->salt, strlen(t->salt), t->Nfactor, t->rfactor, t->pfactor, test_digest, sizeof(test_digest));
-		scrypt_valid &= scrypt_verify(post_vectors[i], test_digest, sizeof(test_digest));
-	}
-	
-	if (!scrypt_valid) {
-#if !defined(SCRYPT_TEST)
-		scrypt_fatal_error("scrypt: scrypt power-on-self-test failed");
-#endif
-		res &= ~4;
-	}
-
-	return res;
 }
 
 typedef struct scrypt_aligned_alloc_t {
@@ -132,93 +102,90 @@ scrypt_free(scrypt_aligned_alloc *aa) {
 #endif
 
 
-void
-scrypt(const uint8_t *password, size_t password_len, const uint8_t *salt, size_t salt_len, uint8_t Nfactor, uint8_t rfactor, uint8_t pfactor, uint8_t *out, size_t bytes) {
+static int
+scrypt_power_on_self_test() {
+	const scrypt_test_setting *t;
+	uint8_t test_digest[64];
+	uint32_t i;
+	int res = 7, scrypt_valid;
 	scrypt_aligned_alloc YX, V;
 	uint8_t *X, *Y;
-	uint32_t N, r, p, chunk_bytes, i;
+	uint32_t N, chunk_bytes;
+	const uint32_t r = SCRYPT_R;
+	const uint32_t p = SCRYPT_P;
+
+	if (!scrypt_test_mix()) {
+#if !defined(SCRYPT_TEST)
+		scrypt_fatal_error("scrypt: mix function power-on-self-test failed");
+#endif
+		res &= ~1;
+	}
+
+	if (!scrypt_test_hash()) {
+#if !defined(SCRYPT_TEST)
+		scrypt_fatal_error("scrypt: hash function power-on-self-test failed");
+#endif
+		res &= ~2;
+	}
+
+	for (i = 0, scrypt_valid = 1; post_settings[i].pw; i++) {
+		t = post_settings + i;
+		
+		N = (1 << (t->Nfactor + 1));
+		
+		chunk_bytes = SCRYPT_BLOCK_BYTES * r * 2;
+		V = scrypt_alloc((uint64_t)N * chunk_bytes);
+		YX = scrypt_alloc((p + 1) * chunk_bytes);
+		
+		Y = YX.ptr;
+		X = Y + chunk_bytes;
+		
+		scrypt_N_1_1((uint8_t *)t->pw, strlen(t->pw), (uint8_t *)t->salt, strlen(t->salt), N, test_digest, sizeof(test_digest), X, Y, V.ptr);
+		scrypt_valid &= scrypt_verify(post_vectors[i], test_digest, sizeof(test_digest));
+		
+		scrypt_free(&V);
+		scrypt_free(&YX);
+	}
+	
+	if (!scrypt_valid) {
+#if !defined(SCRYPT_TEST)
+		scrypt_fatal_error("scrypt: scrypt power-on-self-test failed");
+#endif
+		res &= ~4;
+	}
+
+	return res;
+}
+
+
+void
+scrypt_N_1_1(const uint8_t *password, size_t password_len, const uint8_t *salt, size_t salt_len, uint32_t N, uint8_t *out, size_t bytes, uint8_t *X, uint8_t *Y, uint8_t *V) {
+	uint32_t chunk_bytes, i;
+	const uint32_t r = SCRYPT_R;
+	const uint32_t p = SCRYPT_P;
 
 #if !defined(SCRYPT_CHOOSE_COMPILETIME)
 	scrypt_ROMixfn scrypt_ROMix = scrypt_getROMix();
 #endif
 
-#if !defined(SCRYPT_TEST)
-	static int power_on_self_test = 0;
-	if (!power_on_self_test) {
-		power_on_self_test = 1;
-		if (!scrypt_power_on_self_test())
-			scrypt_fatal_error("scrypt: power on self test failed");
-	}
-#endif
-
-	if (Nfactor > scrypt_maxN)
-		scrypt_fatal_error("scrypt: N out of range");
-	if (rfactor > scrypt_maxr)
-		scrypt_fatal_error("scrypt: r out of range");
-	if (pfactor > scrypt_maxp)
-		scrypt_fatal_error("scrypt: p out of range");
-
-	N = (1 << (Nfactor + 1));
-	r = (1 << rfactor);
-	p = (1 << pfactor);
-
 	chunk_bytes = SCRYPT_BLOCK_BYTES * r * 2;
-	V = scrypt_alloc((uint64_t)N * chunk_bytes);
-	YX = scrypt_alloc((p + 1) * chunk_bytes);
 
 	/* 1: X = PBKDF2(password, salt) */
-	Y = YX.ptr;
-	X = Y + chunk_bytes;
-	scrypt_pbkdf2(password, password_len, salt, salt_len, 1, X, chunk_bytes * p);
+	scrypt_pbkdf2_1(password, password_len, salt, salt_len, X, chunk_bytes * p);
 
 	/* 2: X = ROMix(X) */
 	for (i = 0; i < p; i++)
-		scrypt_ROMix((scrypt_mix_word_t *)(X + (chunk_bytes * i)), (scrypt_mix_word_t *)Y, (scrypt_mix_word_t *)V.ptr, N, r);
+		scrypt_ROMix_1((scrypt_mix_word_t *)(X + (chunk_bytes * i)), (scrypt_mix_word_t *)Y, (scrypt_mix_word_t *)V, N);
 
 	/* 3: Out = PBKDF2(password, X) */
-	scrypt_pbkdf2(password, password_len, X, chunk_bytes * p, 1, out, bytes);
+	scrypt_pbkdf2_1(password, password_len, X, chunk_bytes * p, out, bytes);
 
-	scrypt_ensure_zero(YX.ptr, (p + 1) * chunk_bytes);
-
-	scrypt_free(&V);
-	scrypt_free(&YX);
+#ifdef SCRYPT_PREVENT_STATE_LEAK
+	/* This is an unnecessary security feature - mikaelh */
+	scrypt_ensure_zero(Y, (p + 1) * chunk_bytes);
+#endif
 }
 
-
-// yacoin: increasing Nfactor gradually
-const unsigned char minNfactor = 4;
-const unsigned char maxNfactor = 30;
-
-unsigned char GetNfactor(unsigned int nTimestamp) {
-    int l = 0;
-
-    if (nTimestamp <= 1387756800)
-        return 4;
-
-    unsigned long int s = nTimestamp - 1387756800;
-    while ((s >> 1) > 3) {
-      l += 1;
-      s >>= 1;
-    }
-
-    s &= 3;
-
-    int n = (l * 170 + s * 25 - 2320) / 100;
-
-    if (n < 0) n = 0;
-
-    if (n > 255)
-        printf("GetNfactor(%d) - something wrong(n == %d)\n", nTimestamp, n);
-
-    unsigned char N = (unsigned char)n;
-    //printf("GetNfactor: %d -> %d %d : %d / %d\n", nTimestamp -1387756800, l, s, n, min(max(N, minNfactor), maxNfactor));
-
-//    return min(max(N, minNfactor), maxNfactor);
-
-    if(N<minNfactor) return minNfactor;
-    if(N>maxNfactor) return maxNfactor;
-    return N;
-}
 
 int scanhash_scrypt_jane(int thr_id, uint32_t *pdata,
 	const uint32_t *ptarget,
@@ -229,7 +196,21 @@ int scanhash_scrypt_jane(int thr_id, uint32_t *pdata,
         volatile unsigned char *datac = (unsigned char *) data;
         volatile unsigned char *pdatac = (unsigned char *) pdata;
 	uint32_t n = pdata[19] - 1;
+	scrypt_aligned_alloc YX, V;
+	uint8_t *X, *Y;
+	uint32_t N, chunk_bytes;
+	const uint32_t r = SCRYPT_R;
+	const uint32_t p = SCRYPT_P;
 	int i;
+	
+#if !defined(SCRYPT_TEST)
+	static int power_on_self_test = 0;
+	if (!power_on_self_test) {
+		power_on_self_test = 1;
+		if (!scrypt_power_on_self_test())
+			scrypt_fatal_error("scrypt: power on self test failed");
+	}
+#endif
 
         /* byte swap it */
         for(int z=0;z<20;z++) {
@@ -239,14 +220,33 @@ int scanhash_scrypt_jane(int thr_id, uint32_t *pdata,
             datac[(z*4)+3] = pdatac[(z*4)  ];
         }
 
-        int nfactor = GetNfactor(data[17]);
+	int Nfactor = GetNfactor(data[17], sc_minn, sc_maxn, sc_starttime);
+	
+	if (Nfactor != sc_currentn) {
+		sc_currentn = Nfactor;
+		applog(LOG_NOTICE, "Scrypt-Chacha NFactor set to %d", Nfactor);
+
+	}
+
+	if (Nfactor > scrypt_maxN) {
+		scrypt_fatal_error("scrypt: N out of range");
+	}
+	
+	N = (1 << (Nfactor + 1));
+	
+	chunk_bytes = SCRYPT_BLOCK_BYTES * r * 2;
+	V = scrypt_alloc((uint64_t)N * chunk_bytes);
+	YX = scrypt_alloc((p + 1) * chunk_bytes);
+	
+	Y = YX.ptr;
+	X = Y + chunk_bytes;
 
 	do {
 		data[19] = ++n;
 
-		scrypt((unsigned char *)data, 80, 
+		scrypt_N_1_1((unsigned char *)data, 80, 
                        (unsigned char *)data, 80, 
-                       nfactor, 0, 0, (unsigned char *)hash, 32);
+                       N, (unsigned char *)hash, 32, X, Y, V.ptr);
 
 		if (hashc[31] == 0 && hashc[30] == 0) {
 /*
@@ -264,10 +264,16 @@ int scanhash_scrypt_jane(int thr_id, uint32_t *pdata,
                         pdatac[77] = datac[78];
                         pdatac[78] = datac[77];
                         pdatac[79] = datac[76];
+			
+			scrypt_free(&V);
+			scrypt_free(&YX);
 			return 1;
                    }
 		}
 	} while (n < max_nonce && !work_restart[thr_id].restart);
+	
+	scrypt_free(&V);
+	scrypt_free(&YX);
 	
 	*hashes_done = n - pdata[19] + 1;
 	pdata[19] = n;
