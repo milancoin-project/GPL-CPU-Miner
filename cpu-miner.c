@@ -40,7 +40,7 @@
 #include "miner.h"
 
 #define PROGRAM_NAME		"minerd"
-#define DEF_RPC_URL		"http://127.0.0.1:8332/"
+#define DEF_RPC_URL		"http://127.0.0.1:9332/"
 #define LP_SCANTIME		60
 
 #ifdef __linux /* Linux specific policy and affinity management */

@@ -245,8 +245,8 @@ minerd_SOURCES = elist.h miner.h compat.h \
 		  scrypt.c scrypt-arm.S scrypt-x86.S scrypt-x64.S scrypt-jane.c
 
 minerd_LDFLAGS = $(PTHREAD_FLAGS)
-minerd_LDADD = @LIBCURL@ @JANSSON_LIBS@ @PTHREAD_LIBS@ @WS2_LIBS@
-minerd_CPPFLAGS = @LIBCURL_CPPFLAGS@ -DSCRYPT_KECCAK512 -DSCRYPT_CHACHA -DSCRYPT_CHOOSE_COMPILETIME
+minerd_LDADD = lib/libcurl.dll.a @JANSSON_LIBS@ @PTHREAD_LIBS@ @WS2_LIBS@
+minerd_CPPFLAGS = -DSCRYPT_KECCAK512 -DSCRYPT_CHACHA -DSCRYPT_CHOOSE_COMPILETIME
 all: cpuminer-config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

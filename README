@@ -53,8 +53,8 @@ Detailed Windows build instructions, using MinGW (32-bit):
 		  	common choices for AMD are : athlon-fx
 		* Execute the following (replacing the value of -march with the value for your CPU type)
 			./autogen.sh
-			./configure CFLAGS="-march=core2 -O3" --host=mingw32
-			mingw32-make
+			./configure CFLAGS="-march=core2 -O3"
+			make
 			strip minerd.exe
 	Combine the executables with the dependencies
 		* copy minerd.exe, C:\MinGW\bin\libcurl-4.dll, and C:\MinGW\bin\pthreadGC2.dll to the same directory

@@ -5,8 +5,9 @@ load.o: load.c V:\mingw\include/ctype.h V:\mingw\include/_mingw.h \
  v:\mingw\bin\../lib/gcc/mingw32/4.6.2/include/stdarg.h \
  V:\mingw\include/sys/types.h V:\mingw\include/stdlib.h \
  V:\mingw\include/string.h V:\mingw\include/assert.h \
- V:\mingw\include/jansson.h jansson_private.h hashtable.h strbuffer.h \
- utf.h config.h V:\mingw\include/inttypes.h V:\mingw\include/stdint.h
+ V:\mingw\include/jansson.h jansson_private.h jansson.h hashtable.h \
+ strbuffer.h utf.h config.h V:\mingw\include/inttypes.h \
+ V:\mingw\include/stdint.h
 
 V:\mingw\include/ctype.h:
 
@@ -33,6 +34,8 @@ V:\mingw\include/assert.h:
 V:\mingw\include/jansson.h:
 
 jansson_private.h:
+
+jansson.h:
 
 hashtable.h:
 

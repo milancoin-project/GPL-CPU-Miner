@@ -32,8 +32,8 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = i686-pc-mingw32
-host_triplet = i686-pc-mingw32
-target_triplet = i686-pc-mingw32
+host_triplet = i386-pc-mingw32
+target_triplet = i386-pc-mingw32
 subdir = compat
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -60,7 +60,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = jansson
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -94,13 +94,13 @@ AUTOCONF = ${SHELL} /v/bibibi/src/GPL-CPU-miner/missing --run autoconf
 AUTOHEADER = ${SHELL} /v/bibibi/src/GPL-CPU-miner/missing --run autoheader
 AUTOMAKE = ${SHELL} /v/bibibi/src/GPL-CPU-miner/missing --run automake-1.11
 AWK = gawk
-CC = gcc -std=gnu99
-CCAS = gcc -std=gnu99
+CC = mingw32-gcc -std=gnu99
+CCAS = mingw32-gcc -std=gnu99
 CCASDEPMODE = depmode=gcc3
 CCASFLAGS = -g -O2
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPP = gcc -std=gnu99 -E
+CPP = mingw32-gcc -std=gnu99 -E
 CPPFLAGS = 
 CYGPATH_W = cygpath -w
 DEFS = -DHAVE_CONFIG_H
@@ -118,7 +118,6 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 JANSSON_LIBS = compat/jansson/libjansson.a
 LDFLAGS = 
-LIBCURL_LIBS = 
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
@@ -129,24 +128,24 @@ OBJEXT = o
 PACKAGE = cpuminer
 PACKAGE_BUGREPORT = 
 PACKAGE_NAME = cpuminer
-PACKAGE_STRING = cpuminer 2.3.2
+PACKAGE_STRING = cpuminer 2.4.0
 PACKAGE_TARNAME = cpuminer
 PACKAGE_URL = 
-PACKAGE_VERSION = 2.3.2
+PACKAGE_VERSION = 2.4.0
 PATH_SEPARATOR = :
 PTHREAD_FLAGS = 
 PTHREAD_LIBS = -lpthread
 RANLIB = ranlib
 SET_MAKE = 
 SHELL = /bin/sh
-STRIP = 
-VERSION = 2.3.2
+STRIP = strip
+VERSION = 2.4.0
 WS2_LIBS = -lws2_32
 abs_builddir = /v/bibibi/src/GPL-CPU-miner/compat
 abs_srcdir = /v/bibibi/src/GPL-CPU-miner/compat
 abs_top_builddir = /v/bibibi/src/GPL-CPU-miner
 abs_top_srcdir = /v/bibibi/src/GPL-CPU-miner
-ac_ct_CC = gcc
+ac_ct_CC = 
 am__include = include
 am__leading_dot = .
 am__quote = 
@@ -164,9 +163,9 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i686-pc-mingw32
-host_alias = 
-host_cpu = i686
+host = i386-pc-mingw32
+host_alias = mingw32
+host_cpu = i386
 host_os = mingw32
 host_vendor = pc
 htmldir = ${docdir}
@@ -188,14 +187,15 @@ sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 srcdir = .
 sysconfdir = ${prefix}/etc
-target = i686-pc-mingw32
+target = i386-pc-mingw32
 target_alias = 
-target_cpu = i686
+target_cpu = i386
 target_os = mingw32
 target_vendor = pc
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
+#SUBDIRS = 
 SUBDIRS = jansson
 all: all-recursive
 

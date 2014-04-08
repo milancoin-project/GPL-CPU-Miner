@@ -4,8 +4,8 @@ value.o: value.c config.h V:\mingw\include/stdlib.h \
  V:\mingw\include/string.h V:\mingw\include/jansson.h \
  V:\mingw\include/stdio.h \
  v:\mingw\bin\../lib/gcc/mingw32/4.6.2/include/stdarg.h \
- V:\mingw\include/sys/types.h hashtable.h jansson_private.h utf.h \
- V:\mingw\include/inttypes.h V:\mingw\include/stdint.h util.h
+ V:\mingw\include/sys/types.h hashtable.h jansson_private.h jansson.h \
+ utf.h V:\mingw\include/inttypes.h V:\mingw\include/stdint.h util.h
 
 config.h:
 
@@ -28,6 +28,8 @@ V:\mingw\include/sys/types.h:
 hashtable.h:
 
 jansson_private.h:
+
+jansson.h:
 
 utf.h:
 
