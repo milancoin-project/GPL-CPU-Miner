@@ -224,7 +224,7 @@ int scanhash_scrypt_jane(int thr_id, uint32_t *pdata,
 	
 	if (Nfactor != sc_currentn) {
 		sc_currentn = Nfactor;
-		applog(LOG_NOTICE, "Scrypt-Chacha NFactor set to %d", Nfactor);
+		applog(LOG_NOTICE, "Scrypt-mlc NFactor set to %d", Nfactor);
 
 	}
 

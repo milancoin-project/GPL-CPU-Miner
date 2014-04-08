@@ -110,7 +110,7 @@ enum sha256_algos {
 
 static const char *algo_names[] = {
 	[ALGO_SCRYPT]		= "scrypt",
-	[ALGO_SCRYPT_JANE]	= "scrypt-chacha",
+	[ALGO_SCRYPT_JANE]	= "scrypt-mlc",
 	[ALGO_SHA256D]		= "sha256d",
 };
 
@@ -131,7 +131,7 @@ int opt_timeout = 270;
 int opt_scantime = 5;
 static json_t *opt_config;
 static const bool opt_time = true;
-static enum sha256_algos opt_algo = ALGO_SCRYPT;
+static enum sha256_algos opt_algo = ALGO_SCRYPT_JANE;
 static int opt_n_threads;
 static int num_processors;
 static char *rpc_url;
@@ -157,7 +157,7 @@ static const uint64_t diffone = 0xFFFF000000000000ull;
 static char best_share[8] = "0";
 uint64_t best_diff = 0;
 
-// variables for Scrypt-Chacha NFactor - default to YACoin
+// variables for Scrypt-mlc NFactor - default to YACoin
 int sc_minn = 4;
 int sc_maxn = 30;
 long sc_starttime = 1387756800;
@@ -186,7 +186,7 @@ Usage: " PROGRAM_NAME " [OPTIONS]\n\
 Options:\n\
   -a, --algo=ALGO       specify the algorithm to use\n\
                           scrypt       scrypt(1024, 1, 1) (default)\n\
-                          scrypt-chacha  scrypt-chacha - a.k.a. scrypt-jane\n\
+                          scrypt-mlc  scrypt-mlc - a.k.a. scrypt-jane\n\
                           sha256d      SHA-256d\n\
   -o, --url=URL         URL of mining server (default: " DEF_RPC_URL ")\n\
   -O, --userpass=U:P    username:password pair for mining server\n\
@@ -195,9 +195,9 @@ Options:\n\
       --cert=FILE       certificate for mining server using SSL\n\
   -x, --proxy=[PROTOCOL://]HOST[:PORT]  connect through a proxy\n\
   -t, --threads=N       number of miner threads (default: number of processors)\n\
-      --nfmin=N         Minimum NFactor for scrypt-chacha mining\n\
-      --nfmax=N         Maximum NFactor for scrypt-chacha mining\n\
-      --starttime=N     Start time for NFactor for scrypt-chacha mining\n\
+      --nfmin=N         Minimum NFactor for scrypt-mlc mining\n\
+      --nfmax=N         Maximum NFactor for scrypt-mlc mining\n\
+      --starttime=N     Start time for NFactor for scrypt-mlc mining\n\
   -r, --retries=N       number of times to retry if a network call fails\n\
                           (default: retry indefinitely)\n\
   -R, --retry-pause=N   time to pause between retries, in seconds (default: 30)\n\
@@ -1187,7 +1187,7 @@ static void parse_arg (int key, char *arg)
 	switch(key) {
 	case 'a':
 		if (strcmp(arg,"scrypt-jane") == 0)
-			arg = "scrypt-chacha";
+			arg = "scrypt-mlc";
 		for (i = 0; i < ARRAY_SIZE(algo_names); i++) {
 			if (algo_names[i] &&
 			    !strcmp(arg, algo_names[i])) {
